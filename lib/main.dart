@@ -9,8 +9,18 @@ void main() {
       title: "Awesome Music",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+          centerTitle: false,
+        ),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+          centerTitle: false,
+        ),
+      ),
     ),
   );
 }

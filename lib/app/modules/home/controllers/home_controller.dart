@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
+import 'package:music_player/app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
-
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +17,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void search() {
+    Get.toNamed(Routes.SEARCH_SONG_PAGE);
+  }
 }
