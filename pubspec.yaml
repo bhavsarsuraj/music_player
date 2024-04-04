@@ -18,4 +18,25 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
+  assets:
+    - assets/images/
+  fonts:
+    - family: sofia-pro
+      fonts:
+        - asset: assets/fonts/sofia-pro-bold.ttf
+          weight: 700
+        - asset: assets/fonts/sofia-pro-semi-bold.ttf
+          weight: 600
+        - asset: assets/fonts/sofia-pro-medium.ttf
+          weight: 500
+        - asset: assets/fonts/sofia-pro-medium-italic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/sofia-pro-regular.ttf
+          weight: 400
+        - asset: assets/fonts/sofia-pro-regular-italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/sofia-pro-light.ttf
+          weight: 700
 
