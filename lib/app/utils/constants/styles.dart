@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/app/utils/constants/font_family.dart';
+import 'font_family.dart';
 
-class Styles {
+abstract class Styles {
+  Styles._();
   static String get _font => FontFamily.sofiaPro;
   // light
   static TextStyle light(
