@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/controllers/app_controller.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/utils/constants/validators.dart';
 
@@ -33,11 +34,11 @@ class LoginPageController extends GetxController {
 
   void login() async {
     try {
-      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      print(user);
+      Get.find<AppController>().checkAuthStatus();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

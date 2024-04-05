@@ -8,6 +8,7 @@ abstract class Routes {
   static const SEARCH_SONG_PAGE = _Paths.SEARCH_SONG_PAGE;
   static const LOGIN_PAGE = _Paths.LOGIN_PAGE;
   static const SIGNUP_PAGE = _Paths.SIGNUP_PAGE;
+  static const SPLASH_PAGE = _Paths.SPLASH_PAGE;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SEARCH_SONG_PAGE = '/search-song-page';
   static const LOGIN_PAGE = '/login-page';
   static const SIGNUP_PAGE = '/signup-page';
+  static const SPLASH_PAGE = '/splash-page';
 }

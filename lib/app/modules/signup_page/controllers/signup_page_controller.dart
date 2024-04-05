@@ -37,11 +37,11 @@ class SignupPageController extends GetxController {
 
   void createAccount() async {
     try {
-      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      print(user);
+      Get.back();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
