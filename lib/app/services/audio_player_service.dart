@@ -6,7 +6,6 @@ final s = AudioPlayerService.songProgress = 10;
 abstract class AudioPlayerService {
   AudioPlayerService._();
   static late AudioPlayer _audioPlayer;
-  static AudioPlayer get audioPlayer => _audioPlayer;
 
   static final _songProgress = 0.0.obs;
   static double get songProgress => _songProgress.value;
@@ -32,10 +31,36 @@ abstract class AudioPlayerService {
 
   static void init() {
     _audioPlayer = AudioPlayer();
-    _listenStreams();
   }
 
-  static void _listenStreams() {
+  static void setUrl(String url) async {
+    await _reset();
+    _audioPlayer.setUrl(url);
+    listenStreams();
+  }
+
+  static void setAsset(String assetPath) async {
+    await _reset();
+    _audioPlayer.setAsset(assetPath);
+    listenStreams();
+  }
+
+  static void setAudioSource(AudioSource audioSource) async {
+    await _reset();
+    _audioPlayer.setAudioSource(audioSource);
+    listenStreams();
+  }
+
+  static Future<void> _reset() async {
+    await stop();
+    songProgress = 0;
+    currentDuration = 0;
+    totalDuration = 0;
+    audioProcessingState = ProcessingState.idle;
+    isPlaying = false;
+  }
+
+  static void listenStreams() {
     _listenPlayingStream();
     _listenDurationStream();
     _listenPositionStream();

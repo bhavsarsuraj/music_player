@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:music_player/app/services/audio_player_service.dart';
 import '../controllers/song_details_page_controller.dart';
 
 class SongDetailsPageView extends GetView<SongDetailsPageController> {
@@ -30,7 +29,7 @@ class _PlayPauseButton extends GetView<SongDetailsPageController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final processingState = controller.audioProcessingState;
+      final processingState = AudioPlayerService.audioProcessingState;
       if (processingState == ProcessingState.loading ||
           processingState == ProcessingState.buffering) {
         return Container(
@@ -39,23 +38,23 @@ class _PlayPauseButton extends GetView<SongDetailsPageController> {
           height: 64.0,
           child: CircularProgressIndicator(),
         );
-      } else if (!controller.isPlaying) {
+      } else if (!AudioPlayerService.isPlaying) {
         return IconButton(
           icon: Icon(Icons.play_arrow),
           iconSize: 64.0,
-          onPressed: controller.play,
+          onPressed: AudioPlayerService.play,
         );
       } else if (processingState != ProcessingState.completed) {
         return IconButton(
           icon: Icon(Icons.pause),
           iconSize: 64.0,
-          onPressed: controller.pause,
+          onPressed: AudioPlayerService.pause,
         );
       } else {
         return IconButton(
           icon: Icon(Icons.replay),
           iconSize: 64.0,
-          onPressed: controller.replay,
+          onPressed: AudioPlayerService.replay,
         );
       }
     });
@@ -72,11 +71,9 @@ class _ProgressBar extends GetView<SongDetailsPageController> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Slider(
-            value: controller.songProgress,
-            onChanged: controller.onChangeProgress,
-            onChangeEnd: (_) {
-              controller.playSongFromSpecifiDuration();
-            },
+            value: AudioPlayerService.songProgress,
+            onChanged: AudioPlayerService.onChangeProgress,
+            onChangeEnd: (_) => AudioPlayerService.seek(),
           ),
           const SizedBox(height: 4),
           Padding(
@@ -85,14 +82,14 @@ class _ProgressBar extends GetView<SongDetailsPageController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  controller.currentDuration.toString(),
+                  AudioPlayerService.currentDuration.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
                       ?.copyWith(color: Theme.of(context).hintColor),
                 ),
                 Text(
-                  controller.totalDuration.toString(),
+                  AudioPlayerService.totalDuration.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium

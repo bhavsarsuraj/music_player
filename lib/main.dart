@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/services/app_services.dart';
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
+  AppServices.init();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
