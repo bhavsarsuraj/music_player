@@ -57,4 +57,18 @@ class HomeController extends GetxController {
     // return appController.userModel?.favouriteSongs?.contains(songId) ?? false;
     return false;
   }
+
+  Song? nextSong(Song currentSong) {
+    final index = songs.indexWhere((song) => song.id == currentSong.id);
+    if (index == -1) return null;
+    if (index + 1 < songs.length) return songs[index + 1];
+    return null;
+  }
+
+  Song? previousSong(Song currentSong) {
+    final index = songs.indexWhere((song) => song.id == currentSong.id);
+    if (index == -1) return null;
+    if (index - 1 >= 0) return songs[index - 1];
+    return null;
+  }
 }

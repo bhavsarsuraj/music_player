@@ -29,6 +29,10 @@ abstract class AudioPlayerService {
   static bool get isPlaying => _isPlaying.value;
   static set isPlaying(bool value) => _isPlaying.value = value;
 
+  static final _loopMode = LoopMode.off.obs;
+  static LoopMode get loopMode => _loopMode.value;
+  static set loopMode(LoopMode value) => _loopMode.value = value;
+
   static void init() {
     _audioPlayer = AudioPlayer();
   }
@@ -65,6 +69,7 @@ abstract class AudioPlayerService {
     _listenDurationStream();
     _listenPositionStream();
     _listenPlayerStateStream();
+    _listenLoopModeStream();
   }
 
   static void _listenPlayingStream() {
@@ -90,6 +95,12 @@ abstract class AudioPlayerService {
   static void _listenPlayerStateStream() {
     _audioPlayer.playerStateStream.listen((playerState) {
       audioProcessingState = playerState.processingState;
+    });
+  }
+
+  static void _listenLoopModeStream() {
+    _audioPlayer.loopModeStream.listen((_loopMode) {
+      loopMode = _loopMode;
     });
   }
 
@@ -124,5 +135,17 @@ abstract class AudioPlayerService {
   static Future<void> seek() async {
     final seek = (songProgress * totalDuration).toInt();
     await _audioPlayer.seek(Duration(seconds: seek));
+  }
+
+  static Future<void> changeLoopMode() async {
+    switch (loopMode) {
+      case LoopMode.off:
+        await _audioPlayer.setLoopMode(LoopMode.one);
+        break;
+      case LoopMode.one:
+      case LoopMode.all:
+        await _audioPlayer.setLoopMode(LoopMode.off);
+        break;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/song.dart';
+import 'package:music_player/app/modules/home/controllers/home_controller.dart';
 import 'package:music_player/app/services/audio_player_service.dart';
 
 class SongDetailsPageArguments {
@@ -12,6 +13,19 @@ class SongDetailsPageController extends GetxController {
   SongDetailsPageController({this.arguments});
 
   bool _isValid = true;
+  final homeController = Get.find<HomeController>();
+
+  final _currentSong = Rx<Song?>(null);
+  Song? get currentSong => this._currentSong.value;
+  set currentSong(Song? value) => this._currentSong.value = value;
+
+  final _nextSong = Rx<Song?>(null);
+  Song? get nextSong => this._nextSong.value;
+  set nextSong(Song? value) => this._nextSong.value = value;
+
+  final _previousSong = Rx<Song?>(null);
+  Song? get previousSong => this._previousSong.value;
+  set previousSong(Song? value) => this._previousSong.value = value;
 
   @override
   void onInit() {
@@ -24,7 +38,7 @@ class SongDetailsPageController extends GetxController {
     if (!_isValid) {
       return;
     }
-    configureSong();
+    configureCurrentSong(arguments!.song);
   }
 
   @override
@@ -38,11 +52,32 @@ class SongDetailsPageController extends GetxController {
 
   @override
   void onClose() async {
-    await AudioPlayerService.stop();
     super.onClose();
   }
 
-  void configureSong() {
-    AudioPlayerService.setUrl(arguments?.song.url ?? '');
+  void configureCurrentSong(Song song) {
+    currentSong = song;
+    AudioPlayerService.setUrl(currentSong?.url ?? '');
+    _setNextAndPreviousSongs();
+  }
+
+  void _setNextAndPreviousSongs() {
+    nextSong = homeController.nextSong(currentSong!);
+    previousSong = homeController.previousSong(currentSong!);
+  }
+
+  void didTapNextSong() {
+    if (nextSong == null) return;
+    configureCurrentSong(nextSong!);
+  }
+
+  void didTapPreviousSong() {
+    if (previousSong == null) return;
+    configureCurrentSong(previousSong!);
+  }
+
+  void shuffle() {
+    homeController.songs.shuffle();
+    _setNextAndPreviousSongs();
   }
 }
