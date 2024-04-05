@@ -39,7 +39,8 @@ abstract class AudioPlayerService {
 
   static void setUrl(String url) async {
     await _reset();
-    _audioPlayer.setUrl(url);
+    await _audioPlayer.setUrl(url);
+    play();
     listenStreams();
   }
 

@@ -27,4 +27,25 @@ abstract class SongsRepository {
     // });
     // return [];
   }
+
+  static Future<List<Song>> getSongsByQuery(String query) async {
+    final snapshot = await FirestoreReferences.songsRef.get();
+    return snapshot.docs
+        .map((doc) => Song.fromJson(doc.data()))
+        .where((song) =>
+            song.title?.toLowerCase().contains(query.toLowerCase()) ?? false)
+        .toList();
+  }
+
+  //TODO: Remove
+  // static void runScript() async {
+  //   for (int i = 0; i < songs.length; i++) {
+  //     final song = songs[i];
+  //     final id = FirestoreReferences.songsRef.doc().id;
+  //     song["id"] = id;
+
+  //     await FirestoreReferences.songsRef.doc(id).set(song);
+  //     print('Uploaded Song $song');
+  //   }
+  // }
 }
