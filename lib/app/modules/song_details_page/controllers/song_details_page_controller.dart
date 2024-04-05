@@ -57,7 +57,7 @@ class SongDetailsPageController extends GetxController {
 
   void configureCurrentSong(Song song) {
     currentSong = song;
-    AudioPlayerService.setUrl(currentSong?.url ?? '');
+    AudioPlayerService.playSong(currentSong!);
     _setNextAndPreviousSongs();
   }
 

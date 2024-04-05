@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/app/data/models/song.dart';
 
 final s = AudioPlayerService.songProgress = 10;
 
@@ -33,27 +34,19 @@ abstract class AudioPlayerService {
   static LoopMode get loopMode => _loopMode.value;
   static set loopMode(LoopMode value) => _loopMode.value = value;
 
+  static final _song = Rx<Song?>(null);
+  static Song? get song => _song.value;
+
   static void init() {
     _audioPlayer = AudioPlayer();
   }
 
-  static void setUrl(String url) async {
+  static void playSong(Song songToBePlayed) async {
     await _reset();
-    await _audioPlayer.setUrl(url);
+    _song.value = songToBePlayed;
+    await _audioPlayer.setUrl(song?.url ?? '');
     play();
-    listenStreams();
-  }
-
-  static void setAsset(String assetPath) async {
-    await _reset();
-    _audioPlayer.setAsset(assetPath);
-    listenStreams();
-  }
-
-  static void setAudioSource(AudioSource audioSource) async {
-    await _reset();
-    _audioPlayer.setAudioSource(audioSource);
-    listenStreams();
+    _listenStreams();
   }
 
   static Future<void> _reset() async {
@@ -63,9 +56,11 @@ abstract class AudioPlayerService {
     totalDuration = 0;
     audioProcessingState = ProcessingState.idle;
     isPlaying = false;
+    loopMode = LoopMode.off;
+    _song.value = null;
   }
 
-  static void listenStreams() {
+  static void _listenStreams() {
     _listenPlayingStream();
     _listenDurationStream();
     _listenPositionStream();

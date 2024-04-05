@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/utils/constants/enums.dart';
 import 'package:music_player/app/widgets/base_error_view.dart';
+import 'package:music_player/app/widgets/current_playing_song.dart';
 import 'package:music_player/app/widgets/loader.dart';
 import 'package:music_player/app/widgets/song_card.dart';
 import '../controllers/search_song_page_controller.dart';
@@ -38,39 +39,50 @@ class _Body extends GetView<SearchSongPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      switch (controller.searchState) {
-        case WidgetState.initial:
-          return Container();
-        case WidgetState.loading:
-          return const LoaderWidget();
-        case WidgetState.error:
-          return BaseErrorView(onTryAgain: controller.getSearchResults);
-        case WidgetState.success:
-          if (controller.filteredSongs.isEmpty) {
-            return Center(child: const _EmptySearchResults());
-          } else {
-            return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              itemBuilder: (context, index) {
-                final song = controller.filteredSongs[index];
-                return SongCard(
-                  song: song,
-                  onTapFavourite: () {},
-                  // isFavourite: controller.isMarkedFavourite(song.id!),
-                  isFavourite: false,
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Obx(() {
+          switch (controller.searchState) {
+            case WidgetState.initial:
+              return Container();
+            case WidgetState.loading:
+              return const LoaderWidget();
+            case WidgetState.error:
+              return BaseErrorView(onTryAgain: controller.getSearchResults);
+            case WidgetState.success:
+              if (controller.filteredSongs.isEmpty) {
+                return Center(child: const _EmptySearchResults());
+              } else {
+                return ListView.separated(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 16,
+                    bottom: 100,
+                  ),
+                  itemBuilder: (context, index) {
+                    final song = controller.filteredSongs[index];
+                    return SongCard(
+                      song: song,
+                      onTapFavourite: () {},
+                      // isFavourite: controller.isMarkedFavourite(song.id!),
+                      isFavourite: false,
+                    );
+                  },
+                  separatorBuilder: (context, index) => Divider(
+                    height: 10,
+                    thickness: 1,
+                    color: Theme.of(context).hintColor.withOpacity(0.05),
+                  ),
+                  itemCount: controller.filteredSongs.length,
                 );
-              },
-              separatorBuilder: (context, index) => Divider(
-                height: 10,
-                thickness: 1,
-                color: Theme.of(context).hintColor.withOpacity(0.05),
-              ),
-              itemCount: controller.filteredSongs.length,
-            );
+              }
           }
-      }
-    });
+        }),
+        const CurrentPlayingSong(),
+      ],
+    );
   }
 }
 

@@ -29,7 +29,7 @@ class SongCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.only(left: 8, top: 10, bottom: 10),
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

@@ -21,11 +21,21 @@ void main() async {
           surfaceTintColor: Colors.transparent,
           centerTitle: false,
         ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Colors.black,
+          linearTrackColor: Colors.black.withOpacity(0.1),
+          linearMinHeight: 2,
+        ),
       ),
       darkTheme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
           surfaceTintColor: Colors.transparent,
           centerTitle: false,
+        ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Colors.white,
+          linearTrackColor: Colors.white.withOpacity(0.1),
+          linearMinHeight: 2,
         ),
       ),
     ),
