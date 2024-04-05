@@ -1,5 +1,7 @@
 abstract class Images {
   Images._();
-  static const _base = 'assets/images/';
+
   // Add all images here
+  static const _base = 'assets/images/';
+  static String get errorIllustration => '${_base}error_illustration.png';
 }

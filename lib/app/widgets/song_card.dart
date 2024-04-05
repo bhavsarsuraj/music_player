@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/data/models/song.dart';
+import 'package:music_player/app/modules/song_details_page/controllers/song_details_page_controller.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 
 class SongCard extends StatelessWidget {
-  const SongCard({super.key});
+  final Song song;
+  const SongCard({super.key, required this.song});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.SONG_DETAILS_PAGE);
+        Get.toNamed(
+          Routes.SONG_DETAILS_PAGE,
+          arguments: SongDetailsPageArguments(song: song),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -22,7 +28,7 @@ class SongCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.network(
-                'https://lh3.googleusercontent.com/KYw74XSQwtKPbZTrHMNEBAnEMg1P1gNGwymnZwBSjstbqSE-MpigGlTIy6IZvC-ERlRkeP0c7VTiZObS=w544-h544-l90-rj',
+                song.previewImage ?? '',
                 height: 54,
                 width: 54,
                 fit: BoxFit.cover,
@@ -34,13 +40,13 @@ class SongCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Haawa Haawa',
+                    song.title ?? '',
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Mohit Chauhan',
+                    song.artistNames,
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium

@@ -1,19 +1,38 @@
 import 'package:get/get.dart';
+import 'package:music_player/app/data/models/song.dart';
 import 'package:music_player/app/services/audio_player_service.dart';
 
+class SongDetailsPageArguments {
+  final Song song;
+  SongDetailsPageArguments({required this.song});
+}
+
 class SongDetailsPageController extends GetxController {
+  final SongDetailsPageArguments? arguments;
+  SongDetailsPageController({this.arguments});
+
+  bool _isValid = true;
+
   @override
   void onInit() {
-    _configure();
+    configure();
     super.onInit();
   }
 
-  void _configure() {
+  void configure() {
+    _isValid = arguments != null && arguments is SongDetailsPageArguments;
+    if (!_isValid) {
+      return;
+    }
     configureSong();
   }
 
   @override
-  void onReady() async {
+  void onReady() {
+    if (!_isValid) {
+      Get.back();
+      return;
+    }
     super.onReady();
   }
 
@@ -24,8 +43,6 @@ class SongDetailsPageController extends GetxController {
   }
 
   void configureSong() {
-    AudioPlayerService.setUrl(
-      'https://archive.org/download/IGM-V7/IGM%20-%20Vol.%207/25%20Diablo%20-%20Tristram%20%28Blizzard%29.mp3',
-    );
+    AudioPlayerService.setUrl(arguments?.song.url ?? '');
   }
 }
