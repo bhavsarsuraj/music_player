@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/controllers/app_controller.dart';
+import 'package:music_player/app/data/models/user_model.dart';
+import 'package:music_player/app/data/repositories/user_repository.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/utils/constants/validators.dart';
+import 'package:music_player/app/widgets/loader.dart';
 
 class LoginPageController extends GetxController {
   final emailController = TextEditingController();
@@ -16,6 +19,7 @@ class LoginPageController extends GetxController {
   final _password = ''.obs;
   String get password => this._password.value;
   set password(String value) => this._password.value = value;
+  final appController = Get.find<AppController>();
 
   @override
   void onInit() {
@@ -34,12 +38,22 @@ class LoginPageController extends GetxController {
 
   void login() async {
     try {
+      Loader.show();
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      Get.find<AppController>().checkAuthStatus();
+      final firebaseUser = appController.firebaseUser;
+      UserModel? user = await UserRepository.getUser(firebaseUser?.uid ?? '');
+      if (user == null) {
+        user = UserModel(id: firebaseUser?.uid);
+        await UserRepository.setCurrentUser(user);
+      }
+      appController.userModel = user;
+      Loader.hide();
+      Get.offAllNamed(Routes.HOME);
     } on FirebaseAuthException catch (e) {
+      Loader.hide();
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'invalid-credential') {
@@ -48,6 +62,7 @@ class LoginPageController extends GetxController {
         print('Wrong password provided for that user.');
       }
     } catch (e) {
+      Loader.hide();
       print('Something went wrong');
     }
   }

@@ -45,19 +45,6 @@ class HomeController extends GetxController {
     }
   }
 
-  void markSongFavourite(String songId) async {
-    // try {
-    //   await UserRepository.markSongFavourite(songId);
-    // } catch (e) {
-    //   print(e);
-    // }
-  }
-
-  bool isMarkedFavourite(String songId) {
-    // return appController.userModel?.favouriteSongs?.contains(songId) ?? false;
-    return false;
-  }
-
   Song? nextSong(Song currentSong) {
     final index = songs.indexWhere((song) => song.id == currentSong.id);
     if (index == -1) return null;

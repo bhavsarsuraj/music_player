@@ -65,9 +65,6 @@ class _Body extends GetView<SearchSongPageController> {
                     final song = controller.filteredSongs[index];
                     return SongCard(
                       song: song,
-                      onTapFavourite: () {},
-                      // isFavourite: controller.isMarkedFavourite(song.id!),
-                      isFavourite: false,
                     );
                   },
                   separatorBuilder: (context, index) => Divider(

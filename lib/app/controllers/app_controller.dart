@@ -21,9 +21,13 @@ class AppController {
     }
   }
 
+  void refreshUserModel() {
+    _userModel.refresh();
+  }
+
   Future<void> refreshUser() async {
     try {
-      final userReponse = await UserRepository.getCurrentUser();
+      final userReponse = await UserRepository.getUser(firebaseUser?.uid ?? '');
       if (userReponse != null) {
         userModel = userReponse;
       } else {

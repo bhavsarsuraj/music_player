@@ -4,16 +4,13 @@ import 'package:get/get.dart';
 import 'package:music_player/app/data/models/song.dart';
 import 'package:music_player/app/modules/song_details_page/controllers/song_details_page_controller.dart';
 import 'package:music_player/app/routes/app_pages.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
 
 class SongCard extends StatelessWidget {
   final Song song;
-  final VoidCallback onTapFavourite;
-  final bool isFavourite;
   const SongCard({
     super.key,
     required this.song,
-    required this.onTapFavourite,
-    required this.isFavourite,
   });
 
   @override
@@ -68,19 +65,33 @@ class SongCard extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              onPressed: onTapFavourite,
-              icon: Icon(
-                isFavourite
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_outline_rounded,
-                color: isFavourite ? Colors.red : null,
-                size: 20,
+            Obx(
+              () => IconButton(
+                onPressed: isFavourite ? removeFavourite : markAsFavourite,
+                icon: Icon(
+                  isFavourite
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_outline_rounded,
+                  color: isFavourite ? Colors.red : null,
+                  size: 20,
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void removeFavourite() {
+    SongHelper.removeFromFavourite(song.id!);
+  }
+
+  void markAsFavourite() {
+    SongHelper.markFavourite(song.id!);
+  }
+
+  bool get isFavourite {
+    return SongHelper.isFavourite(song.id!);
   }
 }

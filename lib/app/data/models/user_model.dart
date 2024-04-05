@@ -15,7 +15,7 @@ class UserModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "favourite_songs": favouriteSongs?.map((e) => e).toList(),
+        if (id != null) "id": id,
+        "favourite_songs": favouriteSongs?.map((e) => e).toList() ?? [],
       };
 }

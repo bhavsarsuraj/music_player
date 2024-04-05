@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/data/models/user_model.dart';
+import 'package:music_player/app/data/repositories/user_repository.dart';
 import 'package:music_player/app/utils/constants/validators.dart';
+import 'package:music_player/app/widgets/loader.dart';
 
 class SignupPageController extends GetxController {
   final emailController = TextEditingController();
@@ -37,18 +40,24 @@ class SignupPageController extends GetxController {
 
   void createAccount() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      Loader.show();
+      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      final userModel = UserModel(id: user.user?.uid);
+      await UserRepository.setCurrentUser(userModel);
+      Loader.hide();
       Get.back();
     } on FirebaseAuthException catch (e) {
+      Loader.hide();
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
     } catch (e) {
+      Loader.hide();
       print(e);
     }
   }

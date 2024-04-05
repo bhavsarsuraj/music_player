@@ -42,12 +42,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                     itemBuilder: (context, index) {
                       final song = controller.songs[index];
-                      return SongCard(
-                        song: song,
-                        onTapFavourite: () {},
-                        // isFavourite: controller.isMarkedFavourite(song.id!),
-                        isFavourite: false,
-                      );
+                      return SongCard(song: song);
                     },
                     separatorBuilder: (context, index) => Divider(
                       height: 10,
