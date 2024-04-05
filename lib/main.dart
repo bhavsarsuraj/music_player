@@ -4,7 +4,8 @@ import 'package:music_player/app/services/app_services.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
-  AppServices.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppServices.init();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
