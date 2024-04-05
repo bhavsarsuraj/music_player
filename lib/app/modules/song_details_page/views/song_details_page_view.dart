@@ -22,11 +22,13 @@ class SongDetailsPageView extends GetView<SongDetailsPageController> {
             SizedBox(height: 20),
             _SongImage(),
             SizedBox(height: 20),
+            Spacer(),
             _NameAndArtists(),
             SizedBox(height: 20),
             _ProgressBar(),
             SizedBox(height: 12),
             _Buttons(),
+            Spacer(),
           ],
         ),
       ),
@@ -134,27 +136,35 @@ class _SongImage extends GetView<SongDetailsPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Obx(
-        () => Hero(
-          tag: controller.currentSong!,
-          placeholderBuilder: (context, heroSize, child) {
-            return AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                width: min(Get.width, Get.height),
-              ),
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: CachedNetworkImage(
-                imageUrl: controller.currentSong?.previewImage ?? '',
-                width: min(Get.width, Get.height),
-                fit: BoxFit.fill,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Obx(
+          () => ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: 400,
+              maxWidth: 400,
+            ),
+            child: Hero(
+              tag: controller.currentSong!,
+              placeholderBuilder: (context, heroSize, child) {
+                return AspectRatio(
+                  aspectRatio: 1,
+                  child: SizedBox(
+                    width: min(Get.width, Get.height),
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: controller.currentSong?.previewImage ?? '',
+                    width: min(Get.width, Get.height),
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
             ),
           ),
