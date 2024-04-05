@@ -30,9 +30,15 @@ class HomeView extends GetView<HomeController> {
           case WidgetState.success:
             return ListView.separated(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              itemBuilder: (context, index) => SongCard(
-                song: controller.songs[index],
-              ),
+              itemBuilder: (context, index) {
+                final song = controller.songs[index];
+                return SongCard(
+                  song: song,
+                  onTapFavourite: () {},
+                  // isFavourite: controller.isMarkedFavourite(song.id!),
+                  isFavourite: false,
+                );
+              },
               separatorBuilder: (context, index) => Divider(
                 height: 10,
                 thickness: 1,

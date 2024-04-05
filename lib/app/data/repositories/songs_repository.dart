@@ -1,12 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:music_player/app/data/models/song.dart';
+import 'package:music_player/app/utils/constants/firestore_references.dart';
 
-class SongsRepository {
-  Future<List<Song>> fetchSongs({
+abstract class SongsRepository {
+  SongsRepository._();
+
+  static Future<List<Song>> fetchSongs({
     int currentPage = 0,
     int perPage = 20,
   }) async {
-    final snapshot = await FirebaseFirestore.instance.collection('songs').get();
+    final snapshot = await FirestoreReferences.songsRef.get();
     return snapshot.docs.map((doc) => Song.fromJson(doc.data())).toList();
     //TODO: Remove
     // final songsRef = FirebaseFirestore.instance.collection('songs');

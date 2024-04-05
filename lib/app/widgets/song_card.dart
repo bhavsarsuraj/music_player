@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/song.dart';
@@ -6,7 +7,14 @@ import 'package:music_player/app/routes/app_pages.dart';
 
 class SongCard extends StatelessWidget {
   final Song song;
-  const SongCard({super.key, required this.song});
+  final VoidCallback onTapFavourite;
+  final bool isFavourite;
+  const SongCard({
+    super.key,
+    required this.song,
+    required this.onTapFavourite,
+    required this.isFavourite,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +33,16 @@ class SongCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.network(
-                song.previewImage ?? '',
-                height: 54,
-                width: 54,
-                fit: BoxFit.cover,
+            Hero(
+              tag: song,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: CachedNetworkImage(
+                  imageUrl: song.previewImage ?? '',
+                  height: 54,
+                  width: 54,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -58,10 +69,12 @@ class SongCard extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: onTapFavourite,
               icon: Icon(
-                Icons.favorite_outline,
-                color: null,
+                isFavourite
+                    ? Icons.favorite_rounded
+                    : Icons.favorite_outline_rounded,
+                color: isFavourite ? Colors.red : null,
                 size: 20,
               ),
             ),
