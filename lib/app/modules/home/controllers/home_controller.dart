@@ -5,6 +5,7 @@ import 'package:music_player/app/data/models/song.dart';
 import 'package:music_player/app/data/repositories/songs_repository.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/utils/constants/enums.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
 
 class HomeController extends GetxController {
   final _songsState = PaginatedWidgetState.initial.obs;
@@ -98,5 +99,17 @@ class HomeController extends GetxController {
     songs.clear();
     hasMoreSongs = true;
     lastDoc = null;
+  }
+
+  bool isFavourite(Song song) {
+    return SongHelper.isFavourite(song.id ?? '');
+  }
+
+  void onPressedFavourite(Song song) {
+    if (isFavourite(song)) {
+      SongHelper.removeFromFavourite(song.id ?? ' ');
+    } else {
+      SongHelper.markFavourite(song.id ?? ' ');
+    }
   }
 }

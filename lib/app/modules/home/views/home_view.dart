@@ -43,7 +43,6 @@ class HomeView extends GetView<HomeController> {
                   return PaginationView(
                     padding: EdgeInsets.only(
                       left: 16,
-                      right: 16,
                       top: 16,
                       bottom: 100,
                     ),
@@ -53,7 +52,14 @@ class HomeView extends GetView<HomeController> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final song = controller.songs[index];
-                        return SongCard(song: song);
+                        return Obx(
+                          () => SongCard(
+                            song: song,
+                            isFavourite: controller.isFavourite(song),
+                            onPressedFavourite: () =>
+                                controller.onPressedFavourite(song),
+                          ),
+                        );
                       },
                       separatorBuilder: (context, index) => Divider(
                         height: 10,

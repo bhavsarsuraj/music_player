@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:music_player/app/data/models/song.dart';
 import 'package:music_player/app/modules/home/controllers/home_controller.dart';
 import 'package:music_player/app/services/audio_player_service.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
 
 class SongDetailsPageArguments {
   final Song song;
@@ -80,5 +81,17 @@ class SongDetailsPageController extends GetxController {
   void shuffle() {
     homeController.songs.shuffle();
     _setNextAndPreviousSongs();
+  }
+
+  bool get isFavourite {
+    return SongHelper.isFavourite(currentSong?.id ?? '');
+  }
+
+  void onPressedFavourite() {
+    if (isFavourite) {
+      SongHelper.removeFromFavourite(currentSong?.id ?? ' ');
+    } else {
+      SongHelper.markFavourite(currentSong?.id ?? ' ');
+    }
   }
 }

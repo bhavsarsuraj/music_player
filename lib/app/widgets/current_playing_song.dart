@@ -112,7 +112,7 @@ class _NameAndArtists extends StatelessWidget {
             Text(
               AudioPlayerService.song?.title ?? '',
               style: Theme.of(context).textTheme.titleMedium,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(

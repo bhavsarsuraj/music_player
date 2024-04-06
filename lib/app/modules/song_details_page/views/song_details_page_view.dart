@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_player/app/services/audio_player_service.dart';
 import 'package:music_player/app/utils/constants/images.dart';
 import 'package:music_player/app/utils/extensions/integer_extension.dart';
+import 'package:music_player/app/widgets/favourite_animated_widget.dart';
 import '../controllers/song_details_page_controller.dart';
 
 class SongDetailsPageView extends GetView<SongDetailsPageController> {
@@ -13,7 +14,16 @@ class SongDetailsPageView extends GetView<SongDetailsPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          Obx(
+            () => FavouriteAnimationWidget(
+              isFavourite: controller.isFavourite,
+              onPressed: controller.onPressedFavourite,
+            ),
+          )
+        ],
+      ),
       body: const SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

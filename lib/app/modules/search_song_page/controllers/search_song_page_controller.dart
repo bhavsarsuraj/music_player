@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/data/models/song.dart';
 import 'package:music_player/app/data/repositories/songs_repository.dart';
 import 'package:music_player/app/utils/constants/enums.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
 
 class SearchSongPageController extends GetxController {
   final searchController = TextEditingController();
@@ -61,6 +63,18 @@ class SearchSongPageController extends GetxController {
       searchState = WidgetState.success;
     } catch (e) {
       searchState = WidgetState.error;
+    }
+  }
+
+  bool isFavourite(Song song) {
+    return SongHelper.isFavourite(song.id ?? '');
+  }
+
+  void onPressedFavourite(Song song) {
+    if (isFavourite(song)) {
+      SongHelper.removeFromFavourite(song.id ?? ' ');
+    } else {
+      SongHelper.markFavourite(song.id ?? ' ');
     }
   }
 }

@@ -57,14 +57,18 @@ class _Body extends GetView<SearchSongPageController> {
                 return ListView.separated(
                   padding: EdgeInsets.only(
                     left: 16,
-                    right: 16,
                     top: 16,
                     bottom: 100,
                   ),
                   itemBuilder: (context, index) {
                     final song = controller.filteredSongs[index];
-                    return SongCard(
-                      song: song,
+                    return Obx(
+                      () => SongCard(
+                        song: song,
+                        isFavourite: controller.isFavourite(song),
+                        onPressedFavourite: () =>
+                            controller.onPressedFavourite(song),
+                      ),
                     );
                   },
                   separatorBuilder: (context, index) => Divider(
