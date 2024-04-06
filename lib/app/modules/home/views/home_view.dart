@@ -4,6 +4,7 @@ import 'package:music_player/app/utils/constants/enums.dart';
 import 'package:music_player/app/widgets/base_error_view.dart';
 import 'package:music_player/app/widgets/current_playing_song.dart';
 import 'package:music_player/app/widgets/loader.dart';
+import 'package:music_player/app/widgets/pagination_view.dart';
 import 'package:music_player/app/widgets/song_card.dart';
 import '../controllers/home_controller.dart';
 
@@ -21,41 +22,51 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      body: Obx(
-        () {
-          switch (controller.songsState) {
-            case WidgetState.initial:
-            case WidgetState.loading:
-              return const LoaderWidget();
-            case WidgetState.error:
-              return BaseErrorView(onTryAgain: controller.fetchSongs);
-            case WidgetState.success:
-              return Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  ListView.separated(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Obx(
+            () {
+              switch (controller.songsState) {
+                case PaginatedWidgetState.initial:
+                case PaginatedWidgetState.loading:
+                  return const LoaderWidget();
+                case PaginatedWidgetState.error:
+                  return BaseErrorView(onTryAgain: controller.fetchSongs);
+                case PaginatedWidgetState.success:
+                case PaginatedWidgetState.paginationError:
+                case PaginatedWidgetState.paginationLoading:
+                  return PaginationView(
                     padding: EdgeInsets.only(
                       left: 16,
                       right: 16,
                       top: 16,
                       bottom: 100,
                     ),
-                    itemBuilder: (context, index) {
-                      final song = controller.songs[index];
-                      return SongCard(song: song);
-                    },
-                    separatorBuilder: (context, index) => Divider(
-                      height: 10,
-                      thickness: 1,
-                      color: Theme.of(context).hintColor.withOpacity(0.05),
+                    onRefresh: controller.onRefresh,
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final song = controller.songs[index];
+                        return SongCard(song: song);
+                      },
+                      separatorBuilder: (context, index) => Divider(
+                        height: 10,
+                        thickness: 1,
+                        color: Theme.of(context).hintColor.withOpacity(0.05),
+                      ),
+                      itemCount: controller.songs.length,
                     ),
-                    itemCount: controller.songs.length,
-                  ),
-                  const CurrentPlayingSong(),
-                ],
-              );
-          }
-        },
+                    onScrollEnd: controller.fetchSongs,
+                    isLoading: controller.isLoading,
+                    hasMoreItems: controller.hasMoreSongs,
+                  );
+              }
+            },
+          ),
+          const CurrentPlayingSong(),
+        ],
       ),
     );
   }
