@@ -1,4 +1,5 @@
 import 'package:music_player/app/data/models/artist.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
 
 class Song {
   String? id;
@@ -35,6 +36,8 @@ class Song {
       };
 
   String get artistNames {
-    return artists?.map((e) => e.name ?? '').join(', ') ?? '';
+    return SongHelper.concatenateStrings(
+      artists?.map((e) => e.name ?? '').toList() ?? [],
+    );
   }
 }

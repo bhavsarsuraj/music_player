@@ -44,4 +44,22 @@ abstract class SongHelper {
   static bool isFavourite(String songId) {
     return _user?.favouriteSongs?.contains(songId) ?? false;
   }
+
+  static String concatenateStrings(List<String> strings) {
+    if (strings.isEmpty) return '';
+
+    if (strings.length == 1) {
+      return strings[0];
+    } else if (strings.length == 2) {
+      return '${strings[0]} & ${strings[1]}';
+    } else {
+      String concatenated = '';
+      for (int i = 0; i < strings.length - 1; i++) {
+        concatenated += '${strings[i]}, ';
+      }
+      concatenated = concatenated.substring(0, concatenated.length - 2);
+      concatenated += ' & ${strings.last}';
+      return concatenated;
+    }
+  }
 }
