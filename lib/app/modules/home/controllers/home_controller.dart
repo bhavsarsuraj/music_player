@@ -24,6 +24,8 @@ class HomeController extends GetxController {
 
   DocumentSnapshot<Map<String, dynamic>>? lastDoc;
 
+  final songsRepository = SongsRepository(FirebaseFirestore.instance);
+
   @override
   void onInit() {
     fetchSongs();
@@ -51,7 +53,7 @@ class HomeController extends GetxController {
       songsState = lastDoc != null
           ? PaginatedWidgetState.paginationLoading
           : PaginatedWidgetState.loading;
-      final songsResponse = await SongsRepository.fetchSongs(
+      final songsResponse = await songsRepository.fetchSongs(
         startAfterDoc: lastDoc,
         perPage: perPage,
       );

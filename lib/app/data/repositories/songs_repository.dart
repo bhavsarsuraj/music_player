@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:music_player/app/data/models/song.dart';
-import 'package:music_player/app/utils/constants/firestore_references.dart';
+import 'package:music_player/app/utils/constants/firestore_collections.dart';
 
-abstract class SongsRepository {
-  SongsRepository._();
+class SongsRepository {
+  final FirebaseFirestore _firestore;
+  SongsRepository(this._firestore);
 
-  static Future<(List<Song>, DocumentSnapshot<Map<String, dynamic>>?)>
-      fetchSongs({
+  Future<(List<Song>, DocumentSnapshot<Map<String, dynamic>>?)> fetchSongs({
     int perPage = 15,
     DocumentSnapshot<Map<String, dynamic>>? startAfterDoc,
   }) async {
-    final query = FirestoreReferences.songsRef
+    final query = _firestore
+        .collection(FirestoreCollections.songs)
         .orderBy('id', descending: true)
         .limit(perPage);
 
@@ -27,8 +28,9 @@ abstract class SongsRepository {
     );
   }
 
-  static Future<List<Song>> getSongsByQuery(String query) async {
-    final snapshot = await FirestoreReferences.songsRef.get();
+  Future<List<Song>> getSongsByQuery(String query) async {
+    final snapshot =
+        await _firestore.collection(FirestoreCollections.songs).get();
     return snapshot.docs
         .map((doc) => Song.fromJson(doc.data()))
         .where((song) =>

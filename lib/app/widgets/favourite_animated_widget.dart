@@ -19,9 +19,12 @@ class _FavouriteAnimationWidgetState extends State<FavouriteAnimationWidget>
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  late bool isFavourite;
+
   @override
   void initState() {
     super.initState();
+    isFavourite = widget.isFavourite;
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
@@ -49,10 +52,13 @@ class _FavouriteAnimationWidgetState extends State<FavouriteAnimationWidget>
   }
 
   void onTap() {
-    if (!widget.isFavourite) {
+    widget.onPressed();
+    if (!isFavourite) {
       _controller.forward();
     }
-    widget.onPressed();
+    setState(() {
+      isFavourite = !isFavourite;
+    });
   }
 
   @override
@@ -68,7 +74,7 @@ class _FavouriteAnimationWidgetState extends State<FavouriteAnimationWidget>
               onPressed: onTap,
               icon: Icon(
                 Icons.favorite,
-                color: widget.isFavourite ? Colors.red : Colors.grey,
+                color: isFavourite ? Colors.pink : Colors.grey,
                 size: 24,
               ),
             ),

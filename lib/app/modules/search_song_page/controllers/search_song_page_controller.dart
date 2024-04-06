@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/song.dart';
@@ -17,6 +18,8 @@ class SearchSongPageController extends GetxController {
   set searchState(WidgetState value) => this._searchState.value = value;
 
   final filteredSongs = [].obs;
+
+  final songsRepository = SongsRepository(FirebaseFirestore.instance);
 
   @override
   void onInit() {
@@ -58,7 +61,7 @@ class SearchSongPageController extends GetxController {
         return;
       }
       searchState = WidgetState.loading;
-      final searchedSongs = await SongsRepository.getSongsByQuery(query);
+      final searchedSongs = await songsRepository.getSongsByQuery(query);
       filteredSongs.assignAll(searchedSongs);
       searchState = WidgetState.success;
     } catch (e) {
