@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/widgets/password_icon_button.dart';
@@ -63,6 +62,7 @@ class _Email extends GetView<SignInPageController> {
   @override
   Widget build(BuildContext context) {
     return TextFieldWithTitle(
+      key: Key('sign-in-email'),
       title: 'Email Address',
       controller: controller.emailController,
       hint: 'Enter your email address',
@@ -81,6 +81,7 @@ class _Password extends GetView<SignInPageController> {
   Widget build(BuildContext context) {
     return Obx(
       () => TextFieldWithTitle(
+        key: Key('sign-in-password'),
         title: 'Password',
         controller: controller.passwordController,
         hint: 'Enter password',
@@ -116,24 +117,25 @@ class _Signup extends GetView<SignInPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: 'Don’t have an account? ',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          TextSpan(
-            text: 'Sign Up',
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Don’t have an account? ',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        SizedBox(width: 2),
+        GestureDetector(
+          onTap: controller.signup,
+          child: Text(
+            'Sign Up',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.yellow
                     : Colors.green),
-            recognizer: TapGestureRecognizer()..onTap = controller.signup,
           ),
-        ],
-      ),
-      textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }

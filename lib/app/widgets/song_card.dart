@@ -21,6 +21,7 @@ class SongCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
         Get.toNamed(
           Routes.SONG_DETAILS_PAGE,
           arguments: SongDetailsPageArguments(song: song),

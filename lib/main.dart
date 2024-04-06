@@ -9,10 +9,18 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppServices.init();
-  final botToastBuilder = BotToastInit();
+
   setPathUrlStrategy();
-  runApp(
-    GetMaterialApp(
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final botToastBuilder = BotToastInit();
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Awesome Music",
       initialRoute: AppPages.INITIAL,
@@ -54,6 +62,6 @@ void main() async {
           linearMinHeight: 2,
         ),
       ),
-    ),
-  );
+    );
+  }
 }
