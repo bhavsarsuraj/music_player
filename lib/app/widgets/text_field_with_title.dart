@@ -10,6 +10,12 @@ class TextFieldWithTitle extends StatelessWidget {
   final bool enabled;
   final int? maxLines;
   final int? minLines;
+  final Widget? prefix;
+  final Widget? suffix;
+  final TextInputType? keyboardType;
+  final bool autofocus;
+  final bool obscureText;
+
   const TextFieldWithTitle({
     super.key,
     required this.title,
@@ -20,6 +26,11 @@ class TextFieldWithTitle extends StatelessWidget {
     this.enabled = true,
     this.maxLines,
     this.minLines,
+    this.prefix,
+    this.suffix,
+    this.keyboardType,
+    this.autofocus = false,
+    this.obscureText = false,
   });
 
   @override
@@ -40,6 +51,11 @@ class TextFieldWithTitle extends StatelessWidget {
           enabled: enabled,
           maxLines: maxLines,
           minLines: minLines,
+          prefix: prefix,
+          suffix: suffix,
+          keyboardType: keyboardType,
+          autofocus: autofocus,
+          obscureText: obscureText,
         ),
       ],
     );

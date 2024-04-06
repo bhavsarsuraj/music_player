@@ -5,21 +5,28 @@ import 'package:music_player/app/controllers/app_controller.dart';
 import 'package:music_player/app/data/models/user_model.dart';
 import 'package:music_player/app/data/repositories/user_repository.dart';
 import 'package:music_player/app/routes/app_pages.dart';
+import 'package:music_player/app/utils/constants/strings.dart';
 import 'package:music_player/app/utils/constants/validators.dart';
+import 'package:music_player/app/utils/helpers/firebase_error_helper.dart';
+import 'package:music_player/app/utils/helpers/toast_helper.dart';
 import 'package:music_player/app/widgets/loader.dart';
 
-class LoginPageController extends GetxController {
+class SignInPageController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   final _email = ''.obs;
-  String get email => this._email.value;
-  set email(String value) => this._email.value = value;
+  String get email => this._email.value.trim();
+  set email(String value) => this._email.value = value.trim();
 
   final _password = ''.obs;
-  String get password => this._password.value;
-  set password(String value) => this._password.value = value;
+  String get password => this._password.value.trim();
+  set password(String value) => this._password.value = value.trim();
   final appController = Get.find<AppController>();
+
+  final _showPassword = false.obs;
+  bool get showPassword => this._showPassword.value;
+  set showPassword(bool value) => this._showPassword.value = value;
 
   @override
   void onInit() {
@@ -54,16 +61,10 @@ class LoginPageController extends GetxController {
       Get.offAllNamed(Routes.HOME);
     } on FirebaseAuthException catch (e) {
       Loader.hide();
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'invalid-credential') {
-        print('Either email or password is incorrect');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      FirebaseErrorHelper.handleError(e);
     } catch (e) {
       Loader.hide();
-      print('Something went wrong');
+      ToastHelper.showError(message: ErrorMessages.somethingWentWrong);
     }
   }
 
@@ -84,5 +85,9 @@ class LoginPageController extends GetxController {
 
   void signup() {
     Get.toNamed(Routes.SIGNUP_PAGE);
+  }
+
+  void updatePasswordVisibility() {
+    showPassword = !showPassword;
   }
 }

@@ -14,6 +14,9 @@ class BaseTextField extends StatelessWidget {
   final bool enabled;
   final int? maxLines;
   final int? minLines;
+  final Widget? prefix;
+  final Widget? suffix;
+  final bool obscureText;
 
   const BaseTextField({
     super.key,
@@ -29,6 +32,9 @@ class BaseTextField extends StatelessWidget {
     this.enabled = true,
     this.maxLines,
     this.minLines,
+    this.prefix,
+    this.suffix,
+    this.obscureText = false,
   });
 
   @override
@@ -38,8 +44,19 @@ class BaseTextField extends StatelessWidget {
       controller: controller,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
+        prefixIcon: prefix,
+        prefixIconConstraints: BoxConstraints(
+          maxHeight: 20,
+          maxWidth: 24,
+          minHeight: 20,
+          minWidth: 24,
+        ),
+        suffixIcon: suffix,
         hintText: hint,
-        hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
+        hintStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: Theme.of(context).hintColor),
         contentPadding: EdgeInsets.symmetric(vertical: 12),
         errorText: errorText,
         errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
@@ -50,6 +67,7 @@ class BaseTextField extends StatelessWidget {
         counterText: '',
         prefixStyle: Theme.of(context).inputDecorationTheme.prefixStyle,
       ),
+      obscureText: obscureText,
       autofocus: autofocus,
       keyboardType: keyboardType,
       maxLength: maxLength,

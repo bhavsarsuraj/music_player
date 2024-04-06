@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/login_page/bindings/login_page_binding.dart';
-import '../modules/login_page/views/login_page_view.dart';
+import '../modules/sign_in_page/bindings/sign_in_page_binding.dart';
+import '../modules/sign_in_page/views/sign_in_page_view.dart';
 import '../modules/search_song_page/bindings/search_song_page_binding.dart';
 import '../modules/search_song_page/views/search_song_page_view.dart';
-import '../modules/signup_page/bindings/signup_page_binding.dart';
-import '../modules/signup_page/views/signup_page_view.dart';
+import '../modules/sign_up_page/bindings/sign_up_page_binding.dart';
+import '../modules/sign_up_page/views/sign_up_page_view.dart';
 import '../modules/song_details_page/bindings/song_details_page_binding.dart';
 import '../modules/song_details_page/views/song_details_page_view.dart';
 import '../modules/splash_page/bindings/splash_page_binding.dart';
@@ -37,14 +37,14 @@ class AppPages {
       binding: SearchSongPageBinding(),
     ),
     GetPage(
-      name: _Paths.LOGIN_PAGE,
-      page: () => const LoginPageView(),
-      binding: LoginPageBinding(),
+      name: _Paths.SIGNIN_PAGE,
+      page: () => const SignInPageView(),
+      binding: SignInPageBinding(),
     ),
     GetPage(
       name: _Paths.SIGNUP_PAGE,
-      page: () => const SignupPageView(),
-      binding: SignupPageBinding(),
+      page: () => const SignUpPageView(),
+      binding: SignUpPageBinding(),
     ),
     GetPage(
       name: _Paths.SPLASH_PAGE,

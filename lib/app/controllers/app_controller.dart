@@ -14,7 +14,7 @@ class AppController {
 
   Future<void> checkAuthStatus() async {
     if (firebaseUser == null) {
-      Get.offAllNamed(Routes.LOGIN_PAGE);
+      Get.offAllNamed(Routes.SIGNIN_PAGE);
     } else {
       await refreshUser();
       Get.offAllNamed(Routes.HOME);
@@ -31,10 +31,10 @@ class AppController {
       if (userReponse != null) {
         userModel = userReponse;
       } else {
-        Get.offAllNamed(Routes.LOGIN_PAGE);
+        Get.offAllNamed(Routes.SIGNIN_PAGE);
       }
     } catch (e) {
-      Get.offAllNamed(Routes.LOGIN_PAGE);
+      Get.offAllNamed(Routes.SIGNIN_PAGE);
     }
   }
 }

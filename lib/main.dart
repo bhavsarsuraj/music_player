@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/controllers/app_controller.dart';
@@ -7,6 +8,7 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppServices.init();
+  final botToastBuilder = BotToastInit();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -16,6 +18,18 @@ void main() async {
       onInit: () {
         Get.put(AppController());
       },
+      builder: (context, child) {
+        child = botToastBuilder(context, child);
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1.0),
+          ),
+          child: child,
+        );
+      },
+      navigatorObservers: [
+        BotToastNavigatorObserver(),
+      ],
       theme: ThemeData.light().copyWith(
         appBarTheme: const AppBarTheme(
           surfaceTintColor: Colors.transparent,
