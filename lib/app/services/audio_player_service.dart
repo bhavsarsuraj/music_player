@@ -42,14 +42,14 @@ abstract class AudioPlayerService {
   }
 
   static void playSong(Song songToBePlayed) async {
-    await _reset();
+    await clearData();
     _song.value = songToBePlayed;
     await _audioPlayer.setUrl(song?.url ?? '');
     play();
     _listenStreams();
   }
 
-  static Future<void> _reset() async {
+  static Future<void> clearData() async {
     await stop();
     songProgress = 0;
     currentDuration = 0;

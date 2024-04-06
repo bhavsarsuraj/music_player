@@ -20,6 +20,10 @@ class HomeView extends GetView<HomeController> {
             onPressed: controller.search,
             icon: Icon(Icons.search),
           ),
+          IconButton(
+            onPressed: controller.appController.signout,
+            icon: Icon(Icons.power_settings_new_rounded),
+          ),
         ],
       ),
       body: Stack(
