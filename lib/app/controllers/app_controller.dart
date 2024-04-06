@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/user_model.dart';
@@ -16,6 +17,8 @@ class AppController {
   UserModel? get userModel => this._userModel.value;
   set userModel(UserModel? value) => this._userModel.value = value;
 
+  final userRepository = UserRepository(FirebaseFirestore.instance);
+
   Future<void> checkAuthStatus() async {
     if (firebaseUser == null) {
       Get.offAllNamed(Routes.SIGNIN_PAGE);
@@ -31,7 +34,7 @@ class AppController {
 
   Future<void> refreshUser() async {
     try {
-      final userReponse = await UserRepository.getUser(firebaseUser?.uid ?? '');
+      final userReponse = await userRepository.getUser(firebaseUser?.uid ?? '');
       if (userReponse != null) {
         userModel = userReponse;
       } else {

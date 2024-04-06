@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/controllers/app_controller.dart';
 import 'package:music_player/app/data/models/user_model.dart';
@@ -5,6 +6,8 @@ import 'package:music_player/app/data/repositories/user_repository.dart';
 
 abstract class SongHelper {
   SongHelper._();
+
+  static final userRepository = UserRepository(FirebaseFirestore.instance);
 
   static UserModel? get _user {
     return Get.find<AppController>().userModel;
@@ -19,7 +22,7 @@ abstract class SongHelper {
         _user?.favouriteSongs?.add(songId);
       }
       Get.find<AppController>().refreshUserModel();
-      await UserRepository.updateFavouriteSongs(
+      await userRepository.updateFavouriteSongs(
         userId: _user!.id!,
         favouriteSongs: _user?.favouriteSongs ?? [],
       );
@@ -34,7 +37,7 @@ abstract class SongHelper {
         _user?.favouriteSongs?.remove(songId);
       }
       Get.find<AppController>().refreshUserModel();
-      await UserRepository.updateFavouriteSongs(
+      await userRepository.updateFavouriteSongs(
         userId: _user!.id!,
         favouriteSongs: _user?.favouriteSongs ?? [],
       );

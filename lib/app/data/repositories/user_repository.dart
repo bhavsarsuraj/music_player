@@ -1,26 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:music_player/app/data/models/user_model.dart';
-import 'package:music_player/app/utils/constants/firestore_references.dart';
+import 'package:music_player/app/utils/constants/firestore_collections.dart';
 
-abstract class UserRepository {
-  UserRepository._();
+class UserRepository {
+  final FirebaseFirestore _firestore;
 
-  static Future<void> setCurrentUser(UserModel user) async {
-    FirestoreReferences.usersRef.doc(user.id).set(user.toJson());
+  UserRepository(this._firestore);
+
+  Future<void> setCurrentUser(UserModel user) async {
+    await _firestore
+        .collection(FirestoreCollections.users)
+        .doc(user.id)
+        .set(user.toJson());
   }
 
-  static Future<UserModel?> getUser(String id) async {
-    final snapshot = await FirestoreReferences.usersRef.doc(id).get();
+  Future<UserModel?> getUser(String id) async {
+    final snapshot =
+        await _firestore.collection(FirestoreCollections.users).doc(id).get();
     if (snapshot.data() != null) {
       return UserModel.fromJson(snapshot.data()!);
     }
     return null;
   }
 
-  static Future<void> updateFavouriteSongs({
+  Future<void> updateFavouriteSongs({
     required String userId,
     required List<String> favouriteSongs,
   }) async {
-    await FirestoreReferences.usersRef.doc(userId).update({
+    await _firestore.collection(FirestoreCollections.users).doc(userId).update({
       "favourite_songs": favouriteSongs,
     });
   }

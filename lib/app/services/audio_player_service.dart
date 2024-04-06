@@ -2,8 +2,6 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/app/data/models/song.dart';
 
-final s = AudioPlayerService.songProgress = 10;
-
 abstract class AudioPlayerService {
   AudioPlayerService._();
   static late AudioPlayer _audioPlayer;

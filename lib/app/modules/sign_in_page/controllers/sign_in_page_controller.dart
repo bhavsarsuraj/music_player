@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,8 @@ class SignInPageController extends GetxController {
   bool get showPassword => this._showPassword.value;
   set showPassword(bool value) => this._showPassword.value = value;
 
+  final userRepository = UserRepository(FirebaseFirestore.instance);
+
   @override
   void onInit() {
     super.onInit();
@@ -51,10 +54,10 @@ class SignInPageController extends GetxController {
         password: passwordController.text.trim(),
       );
       final firebaseUser = appController.firebaseUser;
-      UserModel? user = await UserRepository.getUser(firebaseUser?.uid ?? '');
+      UserModel? user = await userRepository.getUser(firebaseUser?.uid ?? '');
       if (user == null) {
         user = UserModel(id: firebaseUser?.uid);
-        await UserRepository.setCurrentUser(user);
+        await userRepository.setCurrentUser(user);
       }
       appController.userModel = user;
       Loader.hide();

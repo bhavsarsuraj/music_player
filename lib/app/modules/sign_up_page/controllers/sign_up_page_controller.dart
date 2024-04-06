@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,6 +38,8 @@ class SignUpPageController extends GetxController {
   set showConfirmPassword(bool value) =>
       this._showConfirmPassword.value = value;
 
+  final userRepository = UserRepository(FirebaseFirestore.instance);
+
   @override
   void onInit() {
     super.onInit();
@@ -64,7 +67,7 @@ class SignUpPageController extends GetxController {
         password: password,
       );
       final userModel = UserModel(id: user.user?.uid);
-      await UserRepository.setCurrentUser(userModel);
+      await userRepository.setCurrentUser(userModel);
       Loader.hide();
       ToastHelper.showSuccess(message: 'Account created successfully');
       Get.offAllNamed(Routes.SIGNIN_PAGE);
