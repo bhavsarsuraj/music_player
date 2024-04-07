@@ -1,103 +1,104 @@
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:music_player/app/data/models/song.dart';
+import 'package:music_player/app/modules/home/controllers/home_controller.dart';
+import 'package:music_player/app/services/audio_player_service.dart';
+import 'package:music_player/app/utils/helpers/song_helper.dart';
+
+class SongDetailsPageArguments {
+  final Song song;
+  SongDetailsPageArguments({required this.song});
+}
 
 class SongDetailsPageController extends GetxController {
-  final player = AudioPlayer();
+  final SongDetailsPageArguments? arguments;
+  SongDetailsPageController({this.arguments});
 
-  final _songProgress = 0.0.obs;
-  double get songProgress => this._songProgress.value;
-  set songProgress(double value) => this._songProgress.value = value;
+  bool _isValid = true;
+  final homeController = Get.find<HomeController>();
 
-  final _currentDuration = 0.obs;
-  int get currentDuration => this._currentDuration.value;
-  set currentDuration(int value) => this._currentDuration.value = value;
+  final _currentSong = Rx<Song?>(null);
+  Song? get currentSong => this._currentSong.value;
+  set currentSong(Song? value) => this._currentSong.value = value;
 
-  final _totalDuration = 0.obs;
-  int get totalDuration => this._totalDuration.value;
-  set totalDuration(int value) => this._totalDuration.value = value;
+  final _nextSong = Rx<Song?>(null);
+  Song? get nextSong => this._nextSong.value;
+  set nextSong(Song? value) => this._nextSong.value = value;
 
-  final _audioProcessingState = ProcessingState.idle.obs;
-  ProcessingState get audioProcessingState => this._audioProcessingState.value;
-  set audioProcessingState(ProcessingState value) =>
-      this._audioProcessingState.value = value;
-
-  final _isPlaying = false.obs;
-  bool get isPlaying => this._isPlaying.value;
-  set isPlaying(bool value) => this._isPlaying.value = value;
+  final _previousSong = Rx<Song?>(null);
+  Song? get previousSong => this._previousSong.value;
+  set previousSong(Song? value) => this._previousSong.value = value;
 
   @override
   void onInit() {
-    _configure();
+    configure();
     super.onInit();
   }
 
-  void _configure() {
-    _configureAudio();
+  void configure() {
+    _isValid = arguments != null && arguments is SongDetailsPageArguments;
+    if (!_isValid) {
+      return;
+    }
+    configureCurrentSong(arguments!.song);
   }
 
   @override
-  void onReady() async {
+  void onReady() {
+    if (!_isValid) {
+      Get.back();
+      return;
+    }
     super.onReady();
   }
 
   @override
   void onClose() async {
-    await pause();
     super.onClose();
   }
 
-  void _configureAudio() async {
-    player.setUrl(
-      'https://archive.org/download/IGM-V7/IGM%20-%20Vol.%207/25%20Diablo%20-%20Tristram%20%28Blizzard%29.mp3',
-      // 'https://file-examples.com/storage/fe0e2ce82f660c1579f31b4/2017/11/file_example_MP3_700KB.mp3',
+  void configureCurrentSong(Song song) {
+    currentSong = song;
+    _setNextAndPreviousSongs();
+    if (AudioPlayerService.song?.id == song.id) return;
+    AudioPlayerService.playSong(
+      currentSong!,
+      onCompleted: onCompletedSong,
     );
-    try {
-      player.playingStream.listen((playing) {
-        isPlaying = playing;
-      });
-      player.durationStream.listen((_totalDuration) {
-        totalDuration = _totalDuration?.inSeconds ?? 0;
-        _configureSongProgress();
-      });
-      player.positionStream.listen((_currentDuration) {
-        currentDuration = _currentDuration.inSeconds ?? 0;
-        _configureSongProgress();
-      });
-      player.playerStateStream.listen((playerState) {
-        audioProcessingState = playerState.processingState;
-      });
-    } catch (_) {
-      print('Error configuring Audio $_');
+  }
+
+  void _setNextAndPreviousSongs() {
+    nextSong = homeController.nextSong(currentSong!);
+    previousSong = homeController.previousSong(currentSong!);
+  }
+
+  void playNextSong() {
+    if (nextSong == null) return;
+    configureCurrentSong(nextSong!);
+  }
+
+  void playPreviousSong() {
+    if (previousSong == null) return;
+    configureCurrentSong(previousSong!);
+  }
+
+  void shuffle() {
+    homeController.songs.shuffle();
+    _setNextAndPreviousSongs();
+  }
+
+  bool get isFavourite {
+    return SongHelper.isFavourite(currentSong?.id ?? '');
+  }
+
+  void onPressedFavourite() {
+    if (isFavourite) {
+      SongHelper.removeFromFavourite(currentSong?.id ?? ' ');
+    } else {
+      SongHelper.markFavourite(currentSong?.id ?? ' ');
     }
   }
 
-  void _configureSongProgress() {
-    if (totalDuration > 0) {
-      songProgress = currentDuration / totalDuration;
-    }
-  }
-
-  Future<void> play() async {
-    if (isPlaying) return;
-    await player.play();
-  }
-
-  Future<void> pause() async {
-    if (!isPlaying) return;
-    await player.pause();
-  }
-
-  void onChangeProgress(double value) {
-    songProgress = value;
-  }
-
-  Future<void> playSongFromSpecifiDuration() async {
-    final songDuration = player.duration?.inSeconds ?? 0;
-    final seek = (songProgress * songDuration).toInt();
-    await player.seek(Duration(seconds: seek));
-  }
-
-  Future<void> replay() async {
-    await player.seek(Duration.zero);
+  void onCompletedSong() {
+    playNextSong();
   }
 }

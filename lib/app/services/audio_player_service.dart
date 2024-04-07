@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-
-final s = AudioPlayerService.songProgress = 10;
+import 'package:music_player/app/data/models/song.dart';
 
 abstract class AudioPlayerService {
   AudioPlayerService._();
   static late AudioPlayer _audioPlayer;
-  static AudioPlayer get audioPlayer => _audioPlayer;
 
   static final _songProgress = 0.0.obs;
   static double get songProgress => _songProgress.value;
@@ -30,9 +29,41 @@ abstract class AudioPlayerService {
   static bool get isPlaying => _isPlaying.value;
   static set isPlaying(bool value) => _isPlaying.value = value;
 
+  static final _loopMode = LoopMode.off.obs;
+  static LoopMode get loopMode => _loopMode.value;
+  static set loopMode(LoopMode value) => _loopMode.value = value;
+
+  static final _song = Rx<Song?>(null);
+  static Song? get song => _song.value;
+
   static void init() {
     _audioPlayer = AudioPlayer();
+  }
+
+  static VoidCallback? _onCompletedSong;
+
+  static void playSong(
+    Song songToBePlayed, {
+    VoidCallback? onCompleted,
+  }) async {
+    await clearData();
+    _onCompletedSong = onCompleted;
+    _song.value = songToBePlayed;
+    await _audioPlayer.setUrl(song?.url ?? '');
+    play();
     _listenStreams();
+  }
+
+  static Future<void> clearData() async {
+    await stop();
+    songProgress = 0;
+    currentDuration = 0;
+    totalDuration = 0;
+    audioProcessingState = ProcessingState.idle;
+    isPlaying = false;
+    loopMode = LoopMode.off;
+    _song.value = null;
+    _onCompletedSong = null;
   }
 
   static void _listenStreams() {
@@ -40,6 +71,7 @@ abstract class AudioPlayerService {
     _listenDurationStream();
     _listenPositionStream();
     _listenPlayerStateStream();
+    _listenLoopModeStream();
   }
 
   static void _listenPlayingStream() {
@@ -65,6 +97,15 @@ abstract class AudioPlayerService {
   static void _listenPlayerStateStream() {
     _audioPlayer.playerStateStream.listen((playerState) {
       audioProcessingState = playerState.processingState;
+      if (audioProcessingState == ProcessingState.completed) {
+        _onCompletedSong?.call();
+      }
+    });
+  }
+
+  static void _listenLoopModeStream() {
+    _audioPlayer.loopModeStream.listen((_loopMode) {
+      loopMode = _loopMode;
     });
   }
 
@@ -99,5 +140,17 @@ abstract class AudioPlayerService {
   static Future<void> seek() async {
     final seek = (songProgress * totalDuration).toInt();
     await _audioPlayer.seek(Duration(seconds: seek));
+  }
+
+  static Future<void> changeLoopMode() async {
+    switch (loopMode) {
+      case LoopMode.off:
+        await _audioPlayer.setLoopMode(LoopMode.one);
+        break;
+      case LoopMode.one:
+      case LoopMode.all:
+        await _audioPlayer.setLoopMode(LoopMode.off);
+        break;
+    }
   }
 }
