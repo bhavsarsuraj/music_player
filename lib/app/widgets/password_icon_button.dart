@@ -18,7 +18,7 @@ class PasswordIconButton extends StatelessWidget {
         showPassword ? Images.visiblePassword : Images.hidePassword,
         height: 16,
         width: 16,
-        color: Theme.of(context).primaryIconTheme.color,
+        color: Theme.of(context).iconTheme.color,
       ),
     );
   }

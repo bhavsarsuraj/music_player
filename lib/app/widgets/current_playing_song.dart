@@ -20,9 +20,7 @@ class CurrentPlayingSong extends StatelessWidget {
             onTap: didTapDetails,
             child: Container(
               height: 64,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Color(0xFF2F2F2F)
-                  : Color(0xFFFDFDFC),
+              decoration: BoxDecoration(gradient: gradient(context)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -51,6 +49,29 @@ class CurrentPlayingSong extends StatelessWidget {
         }
       },
     );
+  }
+
+  LinearGradient gradient(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return isDarkMode
+        ? LinearGradient(
+            colors: [
+              Color(0xFF5C4033),
+              Colors.black,
+            ],
+            stops: [0.1, 1],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          )
+        : LinearGradient(
+            colors: [
+              Color(0xFFEAD7E8),
+              Color(0xFF97D9E1),
+            ],
+            stops: [0, 1],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          );
   }
 
   void didTapDetails() {

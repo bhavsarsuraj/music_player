@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_player/app/services/audio_player_service.dart';
 import 'package:music_player/app/utils/constants/images.dart';
 import 'package:music_player/app/utils/extensions/integer_extension.dart';
+import 'package:music_player/app/widgets/base_scaffold.dart';
 import 'package:music_player/app/widgets/favourite_animated_widget.dart';
 import '../controllers/song_details_page_controller.dart';
 
@@ -13,8 +14,9 @@ class SongDetailsPageView extends GetView<SongDetailsPageController> {
   const SongDetailsPageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         actions: [
           Obx(
             () => FavouriteAnimationWidget(
@@ -252,7 +254,6 @@ class _ProgressBar extends GetView<SongDetailsPageController> {
             onChanged: AudioPlayerService.onChangeProgress,
             onChangeEnd: (_) => AudioPlayerService.seek(),
           ),
-          const SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(

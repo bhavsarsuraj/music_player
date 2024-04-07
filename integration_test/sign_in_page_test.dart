@@ -40,7 +40,7 @@ void main() async {
     await tester.pumpAndSettle();
 
     // Verify signed in details
-    expect(find.text('Home'), findsOneWidget);
+    expect(find.text('Songs'), findsOneWidget);
     expect(Get.find<AppController>().firebaseUser, isNotNull);
     expect(Get.find<AppController>().userModel, isNotNull);
   });

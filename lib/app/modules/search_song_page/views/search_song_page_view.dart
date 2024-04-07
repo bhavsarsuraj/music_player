@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/utils/constants/enums.dart';
 import 'package:music_player/app/widgets/base_error_view.dart';
+import 'package:music_player/app/widgets/base_scaffold.dart';
 import 'package:music_player/app/widgets/current_playing_song.dart';
 import 'package:music_player/app/widgets/loader.dart';
 import 'package:music_player/app/widgets/song_card.dart';
@@ -14,8 +15,9 @@ class SearchSongPageView extends GetView<SearchSongPageController> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
+      child: BaseScaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           titleSpacing: 0,
           title: Padding(
             padding: const EdgeInsets.only(right: 16),

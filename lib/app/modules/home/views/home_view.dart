@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/utils/constants/enums.dart';
 import 'package:music_player/app/widgets/base_error_view.dart';
+import 'package:music_player/app/widgets/base_scaffold.dart';
 import 'package:music_player/app/widgets/current_playing_song.dart';
 import 'package:music_player/app/widgets/loader.dart';
 import 'package:music_player/app/widgets/pagination_view.dart';
@@ -12,9 +13,10 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        backgroundColor: Colors.transparent,
+        title: const Text('Songs'),
         actions: [
           IconButton(
             onPressed: controller.search,

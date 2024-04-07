@@ -40,7 +40,10 @@ class TextFieldWithTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 4),
         BaseTextField(

@@ -34,7 +34,7 @@ class PrimaryButton extends StatelessWidget {
             onTap != null ? backgroundColor : backgroundColor.withOpacity(0.1),
         fixedSize: Size.fromHeight(48),
         shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(48),
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
         ),
       ),
       onPressed: onTap,

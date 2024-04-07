@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/utils/constants/widget_keys.dart';
+import 'package:music_player/app/widgets/base_scaffold.dart';
 import 'package:music_player/app/widgets/password_icon_button.dart';
 import 'package:music_player/app/widgets/primary_button.dart';
 import 'package:music_player/app/widgets/text_field_with_title.dart';
@@ -10,7 +11,7 @@ class SignUpPageView extends GetView<SignUpPageController> {
   const SignUpPageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       body: const _Body(),
     );
   }

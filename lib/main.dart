@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/controllers/app_controller.dart';
 import 'package:music_player/app/services/app_services.dart';
+import 'package:music_player/app/utils/constants/app_themes.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'app/routes/app_pages.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     final botToastBuilder = BotToastInit();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Awesome Music",
+      title: "Melody Mix",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       onInit: () {
@@ -40,28 +41,8 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [
         BotToastNavigatorObserver(),
       ],
-      theme: ThemeData.light().copyWith(
-        appBarTheme: const AppBarTheme(
-          surfaceTintColor: Colors.transparent,
-          centerTitle: false,
-        ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(
-          color: Colors.black,
-          linearTrackColor: Colors.black.withOpacity(0.1),
-          linearMinHeight: 2,
-        ),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        appBarTheme: const AppBarTheme(
-          surfaceTintColor: Colors.transparent,
-          centerTitle: false,
-        ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(
-          color: Colors.white,
-          linearTrackColor: Colors.white.withOpacity(0.1),
-          linearMinHeight: 2,
-        ),
-      ),
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
     );
   }
 }
