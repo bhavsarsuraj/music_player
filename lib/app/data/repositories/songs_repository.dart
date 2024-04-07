@@ -37,16 +37,4 @@ class SongsRepository {
             song.title?.toLowerCase().contains(query.toLowerCase()) ?? false)
         .toList();
   }
-
-  //TODO: Remove
-  // static void runScript() async {
-  //   for (int i = 0; i < songs.length; i++) {
-  //     final song = songs[i];
-  //     final id = FirestoreReferences.songsRef.doc().id;
-  //     song["id"] = id;
-
-  //     await FirestoreReferences.songsRef.doc(id).set(song);
-  //     print('Uploaded Song $song');
-  //   }
-  // }
 }

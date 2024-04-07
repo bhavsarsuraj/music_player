@@ -28,4 +28,6 @@ class ErrorMessages {
   static const String weakPassword = 'The password provided is too weak';
   static const String emailAlreadyInUse =
       'The account already exists for that email';
+  static const String passwordsDoNotMatch =
+      'Oops! Looks like your passwords don\'t match. Please try again';
 }

@@ -58,7 +58,7 @@ class SignUpPageController extends GetxController {
   void signup() async {
     try {
       if (!passwordsMatching) {
-        ToastHelper.showError(message: 'Passwords do not match');
+        ToastHelper.showError(message: ErrorMessages.passwordsDoNotMatch);
         return;
       }
       Loader.show();
