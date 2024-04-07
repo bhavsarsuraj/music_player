@@ -60,7 +60,10 @@ class SongDetailsPageController extends GetxController {
     currentSong = song;
     _setNextAndPreviousSongs();
     if (AudioPlayerService.song?.id == song.id) return;
-    AudioPlayerService.playSong(currentSong!);
+    AudioPlayerService.playSong(
+      currentSong!,
+      onCompleted: onCompletedSong,
+    );
   }
 
   void _setNextAndPreviousSongs() {
@@ -68,12 +71,12 @@ class SongDetailsPageController extends GetxController {
     previousSong = homeController.previousSong(currentSong!);
   }
 
-  void didTapNextSong() {
+  void playNextSong() {
     if (nextSong == null) return;
     configureCurrentSong(nextSong!);
   }
 
-  void didTapPreviousSong() {
+  void playPreviousSong() {
     if (previousSong == null) return;
     configureCurrentSong(previousSong!);
   }
@@ -93,5 +96,9 @@ class SongDetailsPageController extends GetxController {
     } else {
       SongHelper.markFavourite(currentSong?.id ?? ' ');
     }
+  }
+
+  void onCompletedSong() {
+    playNextSong();
   }
 }

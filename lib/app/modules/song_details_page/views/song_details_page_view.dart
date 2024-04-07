@@ -292,7 +292,7 @@ class _PreviousButton extends GetView<SongDetailsPageController> {
         icon: const Icon(Icons.skip_previous_sharp),
         iconSize: 40.0,
         onPressed: controller.previousSong != null
-            ? controller.didTapPreviousSong
+            ? controller.playPreviousSong
             : null,
         color: Theme.of(context).iconTheme.color,
       ),
@@ -309,8 +309,7 @@ class _NextButton extends GetView<SongDetailsPageController> {
       () => IconButton(
         icon: const Icon(Icons.skip_next_sharp),
         iconSize: 40.0,
-        onPressed:
-            controller.nextSong != null ? controller.didTapNextSong : null,
+        onPressed: controller.nextSong != null ? controller.playNextSong : null,
         color: Theme.of(context).iconTheme.color,
       ),
     );

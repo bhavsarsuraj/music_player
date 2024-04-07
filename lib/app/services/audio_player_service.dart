@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/app/data/models/song.dart';
@@ -39,8 +40,14 @@ abstract class AudioPlayerService {
     _audioPlayer = AudioPlayer();
   }
 
-  static void playSong(Song songToBePlayed) async {
+  static VoidCallback? _onCompletedSong;
+
+  static void playSong(
+    Song songToBePlayed, {
+    VoidCallback? onCompleted,
+  }) async {
     await clearData();
+    _onCompletedSong = onCompleted;
     _song.value = songToBePlayed;
     await _audioPlayer.setUrl(song?.url ?? '');
     play();
@@ -56,6 +63,7 @@ abstract class AudioPlayerService {
     isPlaying = false;
     loopMode = LoopMode.off;
     _song.value = null;
+    _onCompletedSong = null;
   }
 
   static void _listenStreams() {
@@ -89,6 +97,9 @@ abstract class AudioPlayerService {
   static void _listenPlayerStateStream() {
     _audioPlayer.playerStateStream.listen((playerState) {
       audioProcessingState = playerState.processingState;
+      if (audioProcessingState == ProcessingState.completed) {
+        _onCompletedSong?.call();
+      }
     });
   }
 
