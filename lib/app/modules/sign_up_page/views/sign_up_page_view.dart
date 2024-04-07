@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/utils/constants/widget_keys.dart';
 import 'package:music_player/app/widgets/password_icon_button.dart';
 import 'package:music_player/app/widgets/primary_button.dart';
 import 'package:music_player/app/widgets/text_field_with_title.dart';
@@ -64,7 +65,7 @@ class _Email extends GetView<SignUpPageController> {
   @override
   Widget build(BuildContext context) {
     return TextFieldWithTitle(
-      key: ValueKey('sign-up-email'),
+      key: WidgetKeys.signUpEmail,
       title: 'Email Address',
       controller: controller.emailController,
       hint: 'Enter your email address',
@@ -83,7 +84,7 @@ class _Password extends GetView<SignUpPageController> {
   Widget build(BuildContext context) {
     return Obx(
       () => TextFieldWithTitle(
-        key: ValueKey('sign-up-password'),
+        key: WidgetKeys.signUpPassword,
         title: 'Password',
         controller: controller.passwordController,
         hint: 'Enter password',
@@ -107,7 +108,7 @@ class _ConfirmPassword extends GetView<SignUpPageController> {
   Widget build(BuildContext context) {
     return Obx(
       () => TextFieldWithTitle(
-        key: ValueKey('sign-up-confirm-password'),
+        key: WidgetKeys.signUpConfirmPassword,
         title: 'Confirm Password',
         controller: controller.confirmPasswordController,
         hint: 'Enter password again',

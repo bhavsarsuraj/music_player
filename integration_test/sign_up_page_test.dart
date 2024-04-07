@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:music_player/app/services/app_services.dart';
+import 'package:music_player/app/utils/constants/widget_keys.dart';
 import 'package:music_player/app/widgets/primary_button.dart';
 import 'package:music_player/main.dart';
 
@@ -25,19 +26,19 @@ void main() async {
 
     // Enter email and password to signup
     await tester.enterText(
-      find.byKey(ValueKey('sign-up-email')),
+      find.byKey(WidgetKeys.signUpEmail),
       'hariharan@gmail.com',
     );
     await tester.pump();
 
     await tester.enterText(
-      find.byKey(ValueKey('sign-up-password')),
+      find.byKey(WidgetKeys.signUpPassword),
       'SignupPassword',
     );
     await tester.pump();
 
     await tester.enterText(
-      find.byKey(ValueKey('sign-up-confirm-password')),
+      find.byKey(WidgetKeys.signUpConfirmPassword),
       'SignupPassword',
     );
     await tester.pump();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/utils/constants/widget_keys.dart';
 import 'package:music_player/app/widgets/password_icon_button.dart';
 import 'package:music_player/app/widgets/primary_button.dart';
 import 'package:music_player/app/widgets/text_field_with_title.dart';
@@ -62,7 +63,7 @@ class _Email extends GetView<SignInPageController> {
   @override
   Widget build(BuildContext context) {
     return TextFieldWithTitle(
-      key: Key('sign-in-email'),
+      key: WidgetKeys.signInEmail,
       title: 'Email Address',
       controller: controller.emailController,
       hint: 'Enter your email address',
@@ -81,7 +82,7 @@ class _Password extends GetView<SignInPageController> {
   Widget build(BuildContext context) {
     return Obx(
       () => TextFieldWithTitle(
-        key: Key('sign-in-password'),
+        key: WidgetKeys.signInPassword,
         title: 'Password',
         controller: controller.passwordController,
         hint: 'Enter password',
