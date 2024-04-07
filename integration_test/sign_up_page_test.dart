@@ -27,7 +27,7 @@ void main() async {
     // Enter email and password to signup
     await tester.enterText(
       find.byKey(WidgetKeys.signUpEmail),
-      'hariharan@gmail.com',
+      'testeruser@gmail.com',
     );
     await tester.pump();
 

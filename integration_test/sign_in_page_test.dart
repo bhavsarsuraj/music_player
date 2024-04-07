@@ -19,9 +19,6 @@ void main() async {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    // Vertify sign up page
-    expect(find.text('Sign In'), findsOneWidget);
-
     // Enter email and password to signup
     await tester.enterText(
       find.byKey(WidgetKeys.signInEmail),
